@@ -1,0 +1,201 @@
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+	* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: 'Microsoft JhengHei', sans-serif;
+	}
+	
+	body {
+	background: #f5f5f5;
+	padding: 20px;
+	}
+	
+	.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	}
+	
+	.subject-section {
+	background: white;
+	border-radius: 10px;
+	padding: 20px;
+	margin-bottom: 30px;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+	}
+	
+	.subject-title {
+	font-size: 24px;
+	color: #333;
+	padding: 10px;
+	margin-bottom: 20px;
+	border-bottom: 3px solid #4CAF50;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	}
+	
+	.toggle-btn {
+	background: #2196F3;
+	color: white;
+	border: none;
+	padding: 8px 15px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background 0.3s;
+	}
+	
+	.toggle-btn:hover {
+	background: #0D47A1;
+	}
+	
+	.resource-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+	}
+	
+	.resource-table th,
+	.resource-table td {
+	padding: 12px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+	}
+	
+	.resource-table th {
+	background-color: #f8f9fa;
+	font-weight: bold;
+	color: #333;
+	}
+	
+	.resource-table tr:hover {
+	background-color: #f5f5f5;
+	}
+	
+	.resource-link {
+	color: #2196F3;
+	text-decoration: none;
+	transition: color 0.3s;
+	}
+	
+	.resource-link:hover {
+	color: #0D47A1;
+	text-decoration: underline;
+	}
+	
+	@media (max-width: 768px) {
+	.subject-title {
+	font-size: 20px;
+	flex-direction: column;
+	gap: 10px;
+	}
+	
+	.resource-table th,
+	.resource-table td {
+	padding: 8px;
+	font-size: 14px;
+	}
+	}
+	</style>
+	</head>
+	<body>
+	<div class="container">
+	<!-- 國語 Section -->
+	<div class="subject-section">
+	<div class="subject-title">
+	<span>國語</span>
+	<button class="toggle-btn" onclick="toggleSection(this)">顯示/隱藏</button>
+	</div>
+	<table class="resource-table">
+	<thead>
+	<tr>
+	<th>標題</th>
+	<th>連結</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr><td>五下國語 L1~L6 成語整理</td><td><a href="https://drive.google.com/file/d/1SEVwKc06FWMcmcQ0_92x-sP6bnMr30ay/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>五下國語 L1~L6 成語wordwall(解釋)</td><td><a href=" https://wordwall.net/resource/89342585 " class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>五下國語 L1~L6 成語wordwall(例句)</td><td><a href=" https://wordwall.net/resource/89342972 " class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>南一五下國語L1~L6(V1)線上測驗</td><td><a href="https://oneexam.oneclass.com.tw/quiz/47529950?authuser=0" class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>南一五下國語L1~L6(V2)線上測驗</td><td><a href="https://oneexam.oneclass.com.tw/quiz/38442780?authuser=0" class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>南一五下國語L1~L6(V3)線上測驗</td><td><a href="https://oneexam.oneclass.com.tw/quiz/04614083?authuser=0" class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>南一五下國語L1~L6(V4)線上測驗</td><td><a href="https://oneexam.oneclass.com.tw/quiz/88250991?authuser=0" class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>南一五下國語L1~L6(V5)線上測驗</td><td><a href="https://oneexam.oneclass.com.tw/quiz/63306596?authuser=0" class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>南一五下國語L1~L6(V6)線上測驗</td><td><a href="https://oneexam.oneclass.com.tw/quiz/13920523?authuser=0" class="resource-link" target="_blank">前往連結</a></td></tr>
+<tr><td>南一五下國語L1~L6(V7)線上測驗</td><td><a href="https://oneexam.oneclass.com.tw/quiz/63181249" class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>南一五下國語L1~L6心智圖(請自行切換到五下)</td><td><a href="https://drive.google.com/file/d/1_UMS5EHC3IUPt1AVNEazGyWC99evlZEb/view" class="resource-link" target="_blank">前往連結</a></td></tr>
+	</tbody>
+	</table>
+	</div>
+	
+	<!-- 數學 Section -->
+	<div class="subject-section">
+	<div class="subject-title">
+	<span>數學</span>
+	<button class="toggle-btn" onclick="toggleSection(this)">顯示/隱藏</button>
+	</div>
+	<table class="resource-table">
+	<thead>
+	<tr>
+	<th>標題</th>
+	<th>連結</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr><td>506數學線上練習網站</td><td><a href="https://sites.google.com/mail.lhps.kh.edu.tw/konizhiwa/%E9%A6%96%E9%A0%81?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>喵喵教我國小數學影片&段考題庫</td><td><a href="https://meow911.com/exam_midterm01/" class="resource-link" target="_blank">前往連結</a></td></tr>
+
+	</tbody>
+	</table>
+	</div>
+	
+	<!-- 社會 Section -->
+	<div class="subject-section">
+	<div class="subject-title">
+	<span>社會</span>
+	<button class="toggle-btn" onclick="toggleSection(this)">顯示/隱藏</button>
+	</div>
+	<table class="resource-table">
+	<thead>
+	<tr>
+	<th>標題</th>
+	<th>連結</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr><td>翰林五下社會U1~U3(V1)線上測驗</td><td><a href=" https://qt.hle.com.tw/login.html?code=51298933 " class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>翰林五下社會U1~U3(V2)線上測驗</td><td><a href=" https://qt.hle.com.tw/login.html?code=02912977 " class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>翰林五下社會U1~U3(V3)線上測驗</td><td><a href=" https://qt.hle.com.tw/login.html?code=59766138 " class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>翰林五下社會U1~U3(V4)線上測驗</td><td><a href=" https://qt.hle.com.tw/login.html?code=69519757 " class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>翰林五下社會U1~U3(V5)線上測驗</td><td><a href=" https://qt.hle.com.tw/login.html?code=80435699 " class="resource-link" target="_blank">前往連結</a></td></tr>
+	<tr><td>翰林五下社會U1~U3(V6)線上測驗</td><td><a href=" https://qt.hle.com.tw/25613268 " class="resource-link" target="_blank">前往連結</a></td></tr>
+
+	<tr><td>翰林五下社會U1~U3重點整理</td><td><a href="放這裡" class="resource-link" target="_blank">前往連結</a></td></tr>
+	</tbody>
+	</table>
+	</div>
+	</div>
+	
+	<script>
+	function toggleSection(button) {
+	const table = button.closest('.subject-section').querySelector('.resource-table');
+	if (table.style.display === 'none') {
+	table.style.display = 'table';
+	button.style.backgroundColor = '#2196F3';
+	} else {
+	table.style.display = 'none';
+	button.style.backgroundColor = '#f44336';
+	}
+	}
+	</script>
+	</body>
+	</html>
+	
+
