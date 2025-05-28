@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>單字複習網站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+  <style>
+    :root {
+      --bg-color: #fff;
+      --text-color: #222;
+      --accent-color: #007bff;
+      --card-bg: #f7f7f7;
+      --border-color: #ccc;
+      --decoration: none;
+      --main-radius: 18px;
+      --main-shadow: 0 4px 24px #0001;
+      --main-font-size: 1em;
+      --main-line-height: 1.6;
+      --container-width: 520px;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-size: var(--main-font-size);
+      line-height: var(--main-line-height);
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', '微軟正黑體', Arial, sans-serif;
+      overflow: hidden;
+    }
+    body {
+      min-height: 100vh;
+      min-width: 100vw;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .theme-switcher {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      padding: 1em 0 0.5em 0;
+    }
+    .theme-switcher button {
+  padding: 0.5em 1.3em;
+  border: none;
+  border-radius: 25px;
+  background: var(--card-bg);
+  color: var(--accent-color);
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #0001;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.18s;
+  touch-action: manipulation;
+  font-weight: 600;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  min-width: 44px;
+  min-height: 44px;
+}
+    .theme-switcher button:active,
+    .theme-switcher button:focus {
+      outline: 2px solid var(--accent-color);
+      transform: scale(0.97);
+    }
+    .theme-switcher button:hover {
+      background: var(--accent-color);
+      color: #fff;
+      box-shadow: 0 4px 16px #0002;
+      transform: scale(1.04);
+    }
+    .container {
+      width: var(--container-width);
+      max-width: 94vw;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: var(--main-radius);
+      box-shadow: var(--main-shadow);
+      padding: 2em 2em 1em 2em;
+      border: 2px solid var(--border-color);
+      position: relative;
+      z-index: 1;
+      overflow: visible;
+      font-size: 1em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 70vh;
+      max-height: 85vh;
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 0.5em;
+      font-size: 2em;
+      letter-spacing: 2px;
+      text-align: center;
+      color: var(--accent-color);
+      font-weight: 800;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px #0001;
+    }
+    .decoration {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: var(--decoration);
+      opacity: 0.16;
+    }
+    .upload-section, .practice-section, .review-section {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 1.2em;
+      width: 100%;
+    }
+    .upload-section label {
+      font-size: 1em;
+      font-weight: 600;
+    }
+    .upload-section input[type="file"] {
+      margin-bottom: 0.5em;
+      font-size: 1em;
+      padding: 0.5em;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+    }
+    .drag-area {
+      border: 2px dashed var(--accent-color);
+      border-radius: 10px;
+      padding: 1em;
+      text-align: center;
+      color: var(--accent-color);
+      background: #fff4;
+      margin-bottom: 0.7em;
+      font-size: 1em;
+      transition: background 0.3s, border-color 0.3s;
+      user-select: none;
+      font-weight: 600;
+    }
+    .drag-area.dragover {
+      background: #e0f7fa;
+      border-color: #00bcd4;
+    }
+    .btn {
+      padding: 0.5em 1.2em;
+      border-radius: 20px;
+      border: none;
+      background: var(--accent-color);
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      margin-right: 0.5em;
+      margin-top: 0.5em;
+      transition: background 0.3s, transform 0.18s;
+      touch-action: manipulation;
+      font-weight: 700;
+      outline: none;
+      box-shadow: 0 2px 8px #0001;
+    }
+    .btn:active, .btn:focus {
+      outline: 2px solid #fff;
+      transform: scale(0.97);
+    }
+    .btn:hover {
+      background: #333;
+      color: #fff;
+      transform: scale(1.04);
+    }
+    .error {
+      color: #d72660;
+      font-weight: bold;
+      margin-top: 0.5em;
+      font-size: 1em;
+    }
+    .practice-section {
+      text-align: center;
+      width: 100%;
+    }
+    .practice-section input[type="text"] {
+      padding: 0.5em;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      margin-right: 0.5em;
+      width: 60%;
+      max-width: 220px;
+      box-sizing: border-box;
+      touch-action: manipulation;
+      font-weight: 600;
+      background: #fff;
+      letter-spacing: 0.05em;
+    }
+    .practice-stats {
+      font-size: 1em;
+      margin-bottom: 0.5em;
+      display: flex;
+      justify-content: center;
+      gap: 1.2em;
+      flex-wrap: wrap;
+    }
+    .practice-stats span {
+      background: #fff6;
+      border-radius: 8px;
+      padding: 0.2em 0.7em;
+      color: var(--accent-color);
+      font-weight: bold;
+      min-width: 62px;
+      display: inline-block;
+      font-size: 1em;
+      box-shadow: 0 2px 8px #0001;
+    }
+    .result {
+      font-weight: bold;
+      margin-top: 1em;
+      min-height: 1.5em;
+      font-size: 1em;
+    }
+    .correct {
+      color: #1bbf2b;
+    }
+    .incorrect {
+      color: #d72660;
+    }
+    .review-section {
+      background: #fff8;
+      border-radius: 12px;
+      padding: 1em;
+      margin-top: 1.2em;
+      border: 1px dashed var(--accent-color);
+      text-align: center;
+      box-shadow: 0 2px 12px #0001;
+      width: 100%;
+    }
+    .review-section h2 {
+      margin-top: 0;
+      font-size: 1.08em;
+      color: var(--accent-color);
+      font-weight: 700;
+    }
+    .review-section ul {
+      padding-left: 1.2em;
+      text-align: left;
+      display: inline-block;
+      font-size: 1em;
+      max-height: 22vh;
+      overflow-y: auto;
+    }
+    .range-section {
+      margin: 1em 0 1.2em 0;
+      text-align: center;
+      width: 100%;
+    }
+    .range-section input[type="number"] {
+      width: 60px;
+      padding: 0.4em;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      margin: 0 0.25em;
+      text-align: center;
+      touch-action: manipulation;
+    }
+    .order-section {
+      margin: 1em 0 1.2em 0;
+      text-align: center;
+      font-size: 1em;
+      font-weight: 600;
+      width: 100%;
+    }
+    .order-section label {
+      margin-right: 0.7em;
+    }
+    .order-radio {
+      margin: 0 0.7em;
+      accent-color: var(--accent-color);
+      width: 1em;
+      height: 1em;
+      vertical-align: middle;
+      touch-action: manipulation;
+    }
+    .pronounce-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      vertical-align: middle;
+      margin-left: 0.3em;
+      outline: none;
+      padding: 0;
+      touch-action: manipulation;
+    }
+    .pronounce-btn svg {
+      width: 1.5em;
+      height: 1.5em;
+      fill: var(--accent-color);
+      transition: fill 0.2s;
+      vertical-align: middle;
+    }
+    .pronounce-btn:hover svg, .pronounce-btn:active svg {
+      fill: #ff4081;
+    }
+    @media (max-width: 600px) {
+      :root { --container-width: 99vw; }
+      .container {
+        padding: 1em 0.4em 0.7em 0.4em;
+        min-height: 97vh;
+        max-height: 99vh;
+      }
+      .practice-section input[type="text"] {
+        width: 96%;
+        font-size: 1em;
+      }
+      .btn, .theme-switcher button {
+  font-size: 0.9em;
+  padding: 0.5em 0.8em;
+  min-width: 44px;
+  min-height: 44px;
+}
+      .practice-stats span {
+        font-size: 0.98em;
+        min-width: 45px;
+        padding: 0.15em 0.3em;
+      }
+      .review-section ul {
+        font-size: 0.98em;
+      }
+      h1 { font-size: 1.3em; }
+    }
+    /* 主題樣式 */
+    .theme-star {
+      --bg-color: #141c2f;
+      --text-color: #e6e6fa;
+      --accent-color: #ffd700;
+      --card-bg: #212b47;
+      --border-color: #3e4a6b;
+      --decoration: repeating-radial-gradient(circle at 80% 20%, #fff 0 1px, transparent 2px 100px), repeating-radial-gradient(circle at 30% 70%, #fff 0 1px, transparent 2px 100px), radial-gradient(ellipse at 60% 40%, #3a2c6a88 0%, transparent 60%);
+    }
+    .theme-ocean {
+      --bg-color: #013a63;
+      --text-color: #b6e0fe;
+      --accent-color: #00c2cb;
+      --card-bg: #125e8a;
+      --border-color: #00c2cb;
+      --decoration: radial-gradient(circle at 70% 30%, #00c2cb55 0 50px, transparent 120px), repeating-linear-gradient(120deg, #00c2cb33 0 3px, transparent 4px 40px);
+    }
+    .theme-candy {
+      --bg-color: #fff0f6;
+      --text-color: #d72660;
+      --accent-color: #ff7eb9;
+      --card-bg: #ffe5ec;
+      --border-color: #ffb3c6;
+      --decoration: repeating-radial-gradient(circle at 20% 80%, #ffb3c6 0 8px, transparent 10px 100px), repeating-radial-gradient(circle at 80% 20%, #b5ead7 0 8px, transparent 10px 100px), repeating-radial-gradient(circle at 50% 50%, #ffdac1 0 12px, transparent 15px 100px);
+    }
+    .theme-magic {
+      --bg-color: #2d223c;
+      --text-color: #ffd700;
+      --accent-color: #a084ca;
+      --card-bg: #3e2f57;
+      --border-color: #ffd700;
+      --decoration: repeating-radial-gradient(circle at 80% 40%, #ffd70044 0 10px, transparent 11px 100px), repeating-radial-gradient(circle at 20% 70%, #a084ca55 0 8px, transparent 9px 100px);
+    }
+    .theme-ice {
+      --bg-color: #e3f6fd;
+      --text-color: #1b263b;
+      --accent-color: #5dade2;
+      --card-bg: #f0faff;
+      --border-color: #b9d6f2;
+      --decoration: repeating-radial-gradient(circle at 30% 60%, #a2d2ff 0 10px, transparent 11px 100px), repeating-radial-gradient(circle at 70% 20%, #b9d6f2 0 8px, transparent 9px 100px);
+    }
+    .theme-cyber {
+      --bg-color: #181825;
+      --text-color: #f72585;
+      --accent-color: #00f2fe;
+      --card-bg: #23233b;
+      --border-color: #3a86ff;
+      --decoration: repeating-linear-gradient(135deg, #00f2fe44 0 4px, transparent 5px 30px), repeating-linear-gradient(-45deg, #f7258555 0 4px, transparent 5px 30px);
+    }
+    .theme-jungle {
+      --bg-color: #184d26;
+      --text-color: #f4f9f4;
+      --accent-color: #a8e063;
+      --card-bg: #27613b;
+      --border-color: #70a37f;
+      --decoration:
+        repeating-radial-gradient(circle at 20% 80%, #a8e063 0 10px, transparent 12px 100px),
+        repeating-radial-gradient(circle at 80% 30%, #56ab2f 0 12px, transparent 14px 100px),
+        url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="50" rx="40" ry="20" fill="%2370a37f" fill-opacity="0.18"/><ellipse cx="30" cy="70" rx="16" ry="10" fill="%23a8e063" fill-opacity="0.17"/><ellipse cx="80" cy="30" rx="12" ry="8" fill="%2356ab2f" fill-opacity="0.18"/></svg>');
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-switcher">
+    <button onclick="setTheme('star')">星空探險</button>
+    <button onclick="setTheme('ocean')">海底世界</button>
+    <button onclick="setTheme('candy')">糖果樂園</button>
+    <button onclick="setTheme('magic')">魔法學院</button>
+    <button onclick="setTheme('ice')">冰雪王國</button>
+    <button onclick="setTheme('cyber')">賽博龐克</button>
+    <button onclick="setTheme('jungle')">叢林冒險</button>
+  </div>
+  <div class="container">
+    <div class="decoration"></div>
+    <h1>單字複習網站</h1>
+    <div class="upload-section">
+      <br>
+      <input type="file" id="csvFile" accept=".csv">
+      <div class="drag-area" id="dragArea">
+        拖曳CSV檔案至此處或
+      </div>
+      <div>
+        <button class="btn" onclick="useSample()">或使用範例單字庫開始練習：</button>
+      </div>
+      <div id="uploadError" class="error"></div>
+    </div>
+    <div class="range-section" id="rangeSection" style="display:none;">
+      <label>練習範圍：</label>
+      <input type="number" id="rangeStart" min="1" value="1"> ~
+      <input type="number" id="rangeEnd" min="1" value="1">
+      <button class="btn" onclick="startPracticeWithRange()">開始練習</button>
+    </div>
+    <div class="order-section" id="orderSection" style="display:none;">
+      <label>練習順序：</label>
+      <input class="order-radio" type="radio" name="order" id="orderRandom" value="random" checked>
+      <label for="orderRandom">隨機</label>
+      <input class="order-radio" type="radio" name="order" id="orderAsc" value="asc">
+      <label for="orderAsc">正序</label>
+      <input class="order-radio" type="radio" name="order" id="orderDesc" value="desc">
+      <label for="orderDesc">倒序</label>
+    </div>
+    <div class="practice-section" style="display:none;">
+      <div class="practice-stats" id="practiceStats">
+        <span>總題數: 0</span>
+        <span>正確: 0</span>
+        <span>錯誤: 0</span>
+      </div>
+      <div id="wordProgress"></div>
+      <div id="wordQuestion" style="font-size:1.1em; margin-bottom:0.6em;"></div>
+      <input type="text" id="answerInput" autocomplete="off" placeholder="請輸入英文單字">
+      <button class="btn" onclick="checkAnswer()">送出</button>
+      <div class="result" id="resultMsg"></div>
+    </div>
+    <div class="review-section" style="display:none;">
+      <h2>以下是您答錯的單字，可以針對這些單字進行複習：</h2>
+      <ul id="wrongList"></ul>
+      <div style="margin-top:1.2em;">
+        <button class="btn" id="exportWrongBtn">匯出錯誤單字CSV</button>
+        <button class="btn" id="retryWrongBtn">針對錯誤單字重新練習</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 主題切換
+    function setTheme(theme) {
+      document.documentElement.className = 'theme-' + theme;
+      localStorage.setItem('theme', theme);
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('theme') || 'star';
+      setTheme(saved);
+    });
+
+    // 單字複習功能
+    let fullWordList = [];
+    let wordList = [];
+    let current = 0;
+    let wrongWords = [];
+    let correctCount = 0;
+    let wrongCount = 0;
+    let totalCount = 0;
+    const csvFile = document.getElementById('csvFile');
+    const uploadError = document.getElementById('uploadError');
+    const practiceSection = document.querySelector('.practice-section');
+    const reviewSection = document.querySelector('.review-section');
+    const wordQuestion = document.getElementById('wordQuestion');
+    const answerInput = document.getElementById('answerInput');
+    const resultMsg = document.getElementById('resultMsg');
+    const wordProgress = document.getElementById('wordProgress');
+    const wrongList = document.getElementById('wrongList');
+    const dragArea = document.getElementById('dragArea');
+    const rangeSection = document.getElementById('rangeSection');
+    const rangeStart = document.getElementById('rangeStart');
+    const rangeEnd = document.getElementById('rangeEnd');
+    const orderSection = document.getElementById('orderSection');
+    const practiceStats = document.getElementById('practiceStats');
+    let lastWrongWords = [];
+
+    // 拖曳上傳
+    dragArea.addEventListener('dragover', function(e){
+      e.preventDefault();
+      dragArea.classList.add('dragover');
+    });
+    dragArea.addEventListener('dragleave', function(e){
+      e.preventDefault();
+      dragArea.classList.remove('dragover');
+    });
+    dragArea.addEventListener('drop', function(e){
+      e.preventDefault();
+      dragArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        const file = e.dataTransfer.files[0];
+        if (file.name.endsWith('.csv')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            parseCSV(e.target.result);
+          };
+          reader.readAsText(file, 'utf-8');
+        } else {
+          uploadError.textContent = "請上傳副檔名為 .csv 的檔案";
+        }
+      }
+    });
+
+    csvFile.addEventListener('change', function() {
+      if (!this.files.length) return;
+      const file = this.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        parseCSV(e.target.result);
+      };
+      reader.readAsText(file, 'utf-8');
+    });
+
+    function parseCSV(text) {
+      const lines = text.trim().split('\n').filter(Boolean);
+      const parsed = [];
+      for (let line of lines) {
+        line = line.replace(/\r/g, '');
+        const cols = line.split(',');
+        if (cols.length < 3) continue;
+        parsed.push({
+          num: cols[0].trim(),
+          en: cols[1].trim(),
+          zh: cols[2].trim()
+        });
+      }
+      if (parsed.length === 0) {
+        uploadError.textContent = "CSV 檔案格式不正確，請確保檔案包含序號、英文單字和中文意思三個欄位。";
+        return;
+      }
+      uploadError.textContent = "";
+      fullWordList = parsed;
+      showRangeSelector();
+    }
+
+    function useSample() {
+      const sample = [
+        {num:"1", en:"apple", zh:"蘋果"},
+        {num:"2", en:"banana", zh:"香蕉"},
+        {num:"3", en:"cat", zh:"貓"},
+        {num:"4", en:"dog", zh:"狗"},
+        {num:"5", en:"elephant", zh:"大象"},
+        {num:"6", en:"fish", zh:"魚"},
+        {num:"7", en:"grape", zh:"葡萄"},
+        {num:"8", en:"hat", zh:"帽子"},
+        {num:"9", en:"ice", zh:"冰"},
+        {num:"10", en:"juice", zh:"果汁"}
+      ];
+      fullWordList = sample;
+      showRangeSelector();
+    }
+
+    function showRangeSelector() {
+      rangeSection.style.display = "";
+      orderSection.style.display = "";
+      practiceSection.style.display = "none";
+      reviewSection.style.display = "none";
+      let min = 1, max = 1;
+      if (fullWordList.length > 0) {
+        min = Number(fullWordList[0].num) || 1;
+        max = Number(fullWordList[fullWordList.length-1].num) || fullWordList.length;
+      }
+      rangeStart.value = min;
+      rangeEnd.value = max;
+      rangeStart.min = min;
+      rangeEnd.min = min;
+      rangeStart.max = max;
+      rangeEnd.max = max;
+    }
+
+    function getOrderType() {
+      const radios = document.getElementsByName('order');
+      for (let r of radios) {
+        if (r.checked) return r.value;
+      }
+      return "random";
+    }
+
+    function startPracticeWithRange() {
+      let start = parseInt(rangeStart.value, 10);
+      let end = parseInt(rangeEnd.value, 10);
+      if (isNaN(start) || isNaN(end) || start > end) {
+        uploadError.textContent = "請輸入正確的練習範圍（起始值需小於等於結束值）";
+        return;
+      }
+      let filtered = fullWordList.filter(w => {
+        const n = parseInt(w.num, 10);
+        return !isNaN(n) && n >= start && n <= end;
+      });
+      if (filtered.length === 0) {
+        uploadError.textContent = "該範圍內沒有單字，請重新設定。";
+        return;
+      }
+      uploadError.textContent = "";
+      const orderType = getOrderType();
+      if (orderType === "random") filtered = shuffle(filtered);
+      else if (orderType === "asc") filtered = filtered.sort((a,b)=>Number(a.num)-Number(b.num));
+      else if (orderType === "desc") filtered = filtered.sort((a,b)=>Number(b.num)-Number(a.num));
+      startPractice(filtered);
+    }
+
+    function startPractice(list) {
+      wordList = list.slice();
+      current = 0;
+      wrongWords = [];
+      correctCount = 0;
+      wrongCount = 0;
+      totalCount = wordList.length;
+      updateStats();
+      practiceSection.style.display = "";
+      reviewSection.style.display = "none";
+      rangeSection.style.display = "none";
+      orderSection.style.display = "none";
+      showWord();
+    }
+
+    function showWord() {
+      if (current >= wordList.length) {
+        finishPractice();
+        return;
+      }
+      updateStats();
+      wordProgress.textContent = `第 ${current + 1} / ${wordList.length} 題`;
+      const en = wordList[current].en;
+      const zh = wordList[current].zh;
+      let hint = "";
+      if (en.length >= 2) {
+        hint = en[0] + "_".repeat(en.length-2) + en[en.length-1];
+      } else if (en.length === 1) {
+        hint = en;
+      }
+      wordQuestion.innerHTML = `
+        請輸入「${zh}」的英文單字：
+        <br>
+        <span style="color:var(--accent-color);font-size:1.1em;font-weight:700;">
+          提示：${hint}
+        </span>
+        <button class="pronounce-btn" id="pronounceBtn" title="發音">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 10v4h4l5 5V5l-5 5H3zm13.5 2c0-1.77-1-3.29-2.5-4.03v8.05c1.5-.74 2.5-2.26 2.5-4.02zm2.5 0c0 3.04-1.64 5.64-4.5 6.32v2.02c4.01-.71 7-4.13 7-8.34s-2.99-7.63-7-8.34v2.02c2.86.68 4.5 3.28 4.5 6.32z"/>
+          </svg>
+        </button>
+      `;
+      answerInput.value = "";
+      resultMsg.textContent = "";
+      answerInput.focus();
+      speakWord(en);
+      setTimeout(() => {
+        const btn = document.getElementById('pronounceBtn');
+        if(btn) btn.onclick = () => speakWord(en);
+      }, 10);
+    }
+
+    function speakWord(word) {
+      if (!window.speechSynthesis) return;
+      const utter = new SpeechSynthesisUtterance(word);
+      utter.lang = 'en-US';
+      const voices = window.speechSynthesis.getVoices();
+      const enVoice = voices.find(v => v.lang && v.lang.startsWith('en'));
+      if (enVoice) utter.voice = enVoice;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+
+    function checkAnswer() {
+      const ans = answerInput.value.trim().toLowerCase();
+      const correct = wordList[current].en.toLowerCase();
+      if (ans === correct) {
+        resultMsg.textContent = "答對了！";
+        resultMsg.className = "result correct";
+        correctCount++;
+      } else {
+        resultMsg.textContent = `答錯了，正確答案是：${wordList[current].en}`;
+        resultMsg.className = "result incorrect";
+        wrongWords.push(wordList[current]);
+        wrongCount++;
+      }
+      updateStats();
+      setTimeout(() => {
+        current++;
+        showWord();
+      }, 900);
+    }
+
+    function updateStats() {
+      practiceStats.innerHTML = `
+        <span>總題數: ${totalCount}</span>
+        <span>正確: ${correctCount}</span>
+        <span>錯誤: ${wrongCount}</span>
+      `;
+    }
+
+    function finishPractice() {
+      practiceSection.style.display = "none";
+      if (wrongWords.length > 0) {
+        reviewSection.style.display = "";
+        wrongList.innerHTML = wrongWords.map(w => 
+          `<li>${w.zh} ➔ <b>${w.en}</b></li>`
+        ).join('');
+        lastWrongWords = wrongWords.slice();
+      } else {
+        reviewSection.style.display = "";
+        wrongList.innerHTML = "<li>恭喜全部答對！</li>";
+        lastWrongWords = [];
+      }
+      setTimeout(() => {
+        document.getElementById('exportWrongBtn').onclick = exportWrongCSV;
+        document.getElementById('retryWrongBtn').onclick = retryWrongWords;
+      }, 10);
+    }
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function exportWrongCSV() {
+      if (!lastWrongWords || lastWrongWords.length === 0) {
+        alert("沒有錯誤單字可匯出！");
+        return;
+      }
+      let csv = '\uFEFF序號,英文單字,中文意思\n';
+      lastWrongWords.forEach(w => {
+        csv += `"${w.num}","${w.en}","${w.zh}"\n`;
+      });
+      const blob = new Blob([csv], {type: "text/csv;charset=utf-8;"});
+      const now = new Date();
+      const pad = n => n.toString().padStart(2, '0');
+      const filename = `錯誤單字(${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}).csv`;
+      if (window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveBlob(blob, filename);
+      } else {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+
+    function retryWrongWords() {
+      if (!lastWrongWords || lastWrongWords.length === 0) {
+        alert("沒有錯誤單字可重新練習！");
+        return;
+      }
+      startPractice(shuffle(lastWrongWords));
+    }
+
+    answerInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkAnswer();
+    });
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = function() {};
+    }
+  </script>
+</body>
+</html>
