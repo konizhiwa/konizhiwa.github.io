@@ -136,23 +136,32 @@
       border: 1px solid var(--border-color);
       background: #fff;
     }
-    .drag-area {
-      border: 2px dashed var(--accent-color);
-      border-radius: 10px;
-      padding: 1em;
-      text-align: center;
-      color: var(--accent-color);
-      background: #fff4;
-      margin-bottom: 0.7em;
-      font-size: 1em;
-      transition: background 0.3s, border-color 0.3s;
-      user-select: none;
-      font-weight: 600;
-    }
-    .drag-area.dragover {
-      background: #e0f7fa;
-      border-color: #00bcd4;
-    }
+  .drag-area {
+  border: 2px dashed var(--accent-color);
+  border-radius: 15px;
+  padding: 1.2em 1.5em;
+  text-align: center;
+  color: var(--accent-color);
+  background: #fff4;
+  margin-bottom: 0.7em;
+  font-size: 1em;
+  transition: background 0.3s, border-color 0.3s, transform 0.2s;
+  user-select: none;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.drag-area.dragover {
+  background: #e0f7fa;
+  border-color: #00bcd4;
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.2);
+}
     .btn {
       padding: 0.5em 1.2em;
       border-radius: 20px;
@@ -338,65 +347,131 @@
       h1 { font-size: 1.3em; }
     }
     /* 主題樣式 */
-    .theme-star {
-      --bg-color: #141c2f;
-      --text-color: #e6e6fa;
-      --accent-color: #ffd700;
-      --card-bg: #212b47;
-      --border-color: #3e4a6b;
-      --decoration: repeating-radial-gradient(circle at 80% 20%, #fff 0 1px, transparent 2px 100px), repeating-radial-gradient(circle at 30% 70%, #fff 0 1px, transparent 2px 100px), radial-gradient(ellipse at 60% 40%, #3a2c6a88 0%, transparent 60%);
-    }
-    .theme-ocean {
-      --bg-color: #013a63;
-      --text-color: #b6e0fe;
-      --accent-color: #00c2cb;
-      --card-bg: #125e8a;
-      --border-color: #00c2cb;
-      --decoration: radial-gradient(circle at 70% 30%, #00c2cb55 0 50px, transparent 120px), repeating-linear-gradient(120deg, #00c2cb33 0 3px, transparent 4px 40px);
-    }
-    .theme-candy {
-      --bg-color: #fff0f6;
-      --text-color: #d72660;
-      --accent-color: #ff7eb9;
-      --card-bg: #ffe5ec;
-      --border-color: #ffb3c6;
-      --decoration: repeating-radial-gradient(circle at 20% 80%, #ffb3c6 0 8px, transparent 10px 100px), repeating-radial-gradient(circle at 80% 20%, #b5ead7 0 8px, transparent 10px 100px), repeating-radial-gradient(circle at 50% 50%, #ffdac1 0 12px, transparent 15px 100px);
-    }
-    .theme-magic {
-      --bg-color: #2d223c;
-      --text-color: #ffd700;
-      --accent-color: #a084ca;
-      --card-bg: #3e2f57;
-      --border-color: #ffd700;
-      --decoration: repeating-radial-gradient(circle at 80% 40%, #ffd70044 0 10px, transparent 11px 100px), repeating-radial-gradient(circle at 20% 70%, #a084ca55 0 8px, transparent 9px 100px);
-    }
-    .theme-ice {
-      --bg-color: #e3f6fd;
-      --text-color: #1b263b;
-      --accent-color: #5dade2;
-      --card-bg: #f0faff;
-      --border-color: #b9d6f2;
-      --decoration: repeating-radial-gradient(circle at 30% 60%, #a2d2ff 0 10px, transparent 11px 100px), repeating-radial-gradient(circle at 70% 20%, #b9d6f2 0 8px, transparent 9px 100px);
-    }
-    .theme-cyber {
-      --bg-color: #181825;
-      --text-color: #f72585;
-      --accent-color: #00f2fe;
-      --card-bg: #23233b;
-      --border-color: #3a86ff;
-      --decoration: repeating-linear-gradient(135deg, #00f2fe44 0 4px, transparent 5px 30px), repeating-linear-gradient(-45deg, #f7258555 0 4px, transparent 5px 30px);
-    }
-    .theme-jungle {
-      --bg-color: #184d26;
-      --text-color: #f4f9f4;
-      --accent-color: #a8e063;
-      --card-bg: #27613b;
-      --border-color: #70a37f;
-      --decoration:
-        repeating-radial-gradient(circle at 20% 80%, #a8e063 0 10px, transparent 12px 100px),
-        repeating-radial-gradient(circle at 80% 30%, #56ab2f 0 12px, transparent 14px 100px),
-        url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="50" rx="40" ry="20" fill="%2370a37f" fill-opacity="0.18"/><ellipse cx="30" cy="70" rx="16" ry="10" fill="%23a8e063" fill-opacity="0.17"/><ellipse cx="80" cy="30" rx="12" ry="8" fill="%2356ab2f" fill-opacity="0.18"/></svg>');
-    }
+  /* 主題樣式 - 優化版本 */
+
+/* 星空探險 - 深藍紫色調 */
+.theme-star {
+  --bg-color: #0a0f1e;
+  --text-color: #ffffff;
+  --accent-color: #ffd700;
+  --card-bg: #1a1f35;
+  --border-color: #ffd700;
+  --decoration: 
+    radial-gradient(circle at 15% 25%, #ffffff 1px, transparent 2px),
+    radial-gradient(circle at 85% 15%, #ffffff 0.5px, transparent 1px),
+    radial-gradient(circle at 25% 75%, #ffffff 1.5px, transparent 2px),
+    radial-gradient(circle at 75% 85%, #ffffff 0.8px, transparent 1px),
+    radial-gradient(circle at 45% 35%, #ffffff 0.3px, transparent 1px),
+    radial-gradient(circle at 65% 65%, #ffffff 1px, transparent 1.5px),
+    radial-gradient(ellipse at 50% 30%, #4169e155 0%, transparent 70%),
+    url('data:image/svg+xml;utf8,<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="100,20 105,35 120,35 108,45 113,60 100,50 87,60 92,45 80,35 95,35" fill="%23ffd700" opacity="0.3"/><polygon points="50,80 53,87 60,87 55,91 57,98 50,94 43,98 45,91 40,87 47,87" fill="%23ffffff" opacity="0.4"/><polygon points="150,120 153,127 160,127 155,131 157,138 150,134 143,138 145,131 140,127 147,127" fill="%23ffd700" opacity="0.25"/><circle cx="30" cy="40" r="2" fill="%23ffffff" opacity="0.6"/><circle cx="170" cy="70" r="1.5" fill="%23ffffff" opacity="0.7"/></svg>'),
+    linear-gradient(135deg, #0a0f1e 0%, #1a1f35 50%, #0a0f1e 100%);
+}
+
+/* 海底世界 - 深海藍綠色調 */
+.theme-ocean {
+  --bg-color: #001a2e;
+  --text-color: #e0f7ff;
+  --accent-color: #00ffff;
+  --card-bg: #003d5b;
+  --border-color: #00bcd4;
+  --decoration: 
+    radial-gradient(ellipse at 20% 80%, #00ffff22 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, #0080b355 0%, transparent 70%),
+    radial-gradient(circle at 60% 40%, #006994 0 40px, transparent 80px),
+    repeating-linear-gradient(45deg, 
+      transparent 0px, 
+      transparent 40px, 
+      #00bcd433 40px, 
+      #00bcd433 42px),
+    url('data:image/svg+xml;utf8,<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30 60 Q40 50, 50 60 Q60 70, 70 60 Q80 50, 90 60" stroke="%2300bcd4" stroke-width="2" fill="none" opacity="0.3"/><path d="M20 100 Q35 90, 50 100 Q65 110, 80 100 Q95 90, 110 100" stroke="%2300ffff" stroke-width="1.5" fill="none" opacity="0.4"/><ellipse cx="40" cy="30" rx="15" ry="8" fill="%2300bcd4" opacity="0.2"/><ellipse cx="100" cy="120" rx="20" ry="10" fill="%2300ffff" opacity="0.15"/><circle cx="120" cy="40" r="3" fill="%2300ffff" opacity="0.5"/><circle cx="25" cy="130" r="2" fill="%2300bcd4" opacity="0.6"/></svg>'),
+    linear-gradient(180deg, #001a2e 0%, #003d5b 30%, #002d45 70%, #001a2e 100%);
+}
+
+/* 糖果樂園 - 粉紅甜美色調 */
+.theme-candy {
+  --bg-color: #ffeef7;
+  --text-color: #c2185b;
+  --accent-color: #e91e63;
+  --card-bg: #ffffff;
+  --border-color: #f48fb1;
+  --decoration: 
+    radial-gradient(circle at 25% 25%, #ff69b4aa 0 30px, transparent 50px),
+    radial-gradient(circle at 75% 75%, #ff1493aa 0 25px, transparent 45px),
+    radial-gradient(circle at 15% 85%, #ffc0cbaa 0 35px, transparent 60px),
+    radial-gradient(circle at 85% 15%, #ffb6c1aa 0 20px, transparent 40px),
+    url('data:image/svg+xml;utf8,<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="12" fill="%23ff69b4" opacity="0.3"/><circle cx="90" cy="30" r="8" fill="%23ff1493" opacity="0.4"/><circle cx="30" cy="90" r="10" fill="%23ffc0cb" opacity="0.3"/><circle cx="90" cy="90" r="14" fill="%23ffb6c1" opacity="0.25"/><path d="M60 20 L65 30 L75 30 L67 38 L70 48 L60 42 L50 48 L53 38 L45 30 L55 30 Z" fill="%23ff69b4" opacity="0.3"/><ellipse cx="60" cy="80" rx="20" ry="8" fill="%23f48fb1" opacity="0.2"/></svg>'),
+    linear-gradient(45deg, #ffeef7 0%, #fff0f5 50%, #ffeef7 100%);
+}
+
+/* 魔法學院 - 深紫神秘色調 */
+.theme-magic {
+  --bg-color: #1a0d33;
+  --text-color: #e6d9ff;
+  --accent-color: #9c27b0;
+  --card-bg: #2d1b4e;
+  --border-color: #ab47bc;
+  --decoration: 
+    radial-gradient(ellipse at 30% 70%, #9c27b044 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 30%, #673ab777 0%, transparent 50%),
+    radial-gradient(circle at 50% 20%, #3f51b533 0 60px, transparent 100px),
+    url('data:image/svg+xml;utf8,<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40 40 L50 60 L70 50 L60 70 L80 80 L60 90 L70 110 L50 100 L40 120 L30 100 L10 110 L20 90 L0 80 L20 70 L10 50 L30 60 Z" fill="%239c27b0" opacity="0.25"/><circle cx="120" cy="40" r="8" fill="%23ab47bc" opacity="0.3"/><path d="M120 100 Q130 90, 140 100 Q130 110, 120 100" fill="%23673ab7" opacity="0.4"/><ellipse cx="40" cy="120" rx="15" ry="6" fill="%239c27b0" opacity="0.2"/><polygon points="100,20 105,30 115,30 107,37 110,47 100,42 90,47 93,37 85,30 95,30" fill="%23ab47bc" opacity="0.3"/></svg>'),
+    linear-gradient(225deg, #1a0d33 0%, #2d1b4e 40%, #1a0d33 100%);
+}
+
+/* 冰雪王國 - 冰藍清冷色調 */
+.theme-ice {
+  --bg-color: #e8f4fd;
+  --text-color: #01579b;
+  --accent-color: #0277bd;
+  --card-bg: #ffffff;
+  --border-color: #29b6f6;
+  --decoration: 
+    radial-gradient(circle at 40% 30%, #81d4fa55 0 50px, transparent 80px),
+    radial-gradient(circle at 70% 70%, #b3e5fc44 0 40px, transparent 70px),
+    radial-gradient(circle at 20% 80%, #e1f5fe66 0 60px, transparent 90px),
+    url('data:image/svg+xml;utf8,<svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="70,10 75,25 90,30 75,35 70,50 65,35 50,30 65,25" fill="%2329b6f6" opacity="0.3"/><polygon points="30,60 32,65 37,67 32,69 30,74 28,69 23,67 28,65" fill="%2381d4fa" opacity="0.4"/><polygon points="110,90 113,97 120,99 113,101 110,108 107,101 100,99 107,97" fill="%23b3e5fc" opacity="0.35"/><path d="M20 20 L30 25 L25 35 L20 30 L10 35 L15 25 Z" fill="%230277bd" opacity="0.25"/><path d="M120 20 L125 30 L135 25 L130 35 L125 40 L120 35 L110 40 L115 30 Z" fill="%2329b6f6" opacity="0.3"/></svg>'),
+    linear-gradient(135deg, #e8f4fd 0%, #ffffff 50%, #f0f8ff 100%);
+}
+
+/* 賽博龐克 - 霓虹科技色調 */
+.theme-cyber {
+  --bg-color: #0d1117;
+  --text-color: #00ff88;
+  --accent-color: #ff0080;
+  --card-bg: #161925;
+  --border-color: #00ffaa;
+  --decoration: 
+    repeating-linear-gradient(90deg, 
+      transparent 0px, 
+      transparent 98px, 
+      #ff008022 100px, 
+      #ff008022 102px),
+    repeating-linear-gradient(0deg, 
+      transparent 0px, 
+      transparent 98px, 
+      #00ff8822 100px, 
+      #00ff8822 102px),
+    radial-gradient(ellipse at 25% 75%, #ff008033 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 25%, #00ff8833 0%, transparent 60%),
+    url('data:image/svg+xml;utf8,<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="30" height="4" fill="%23ff0080" opacity="0.6"/><rect x="130" y="40" width="25" height="3" fill="%2300ff88" opacity="0.5"/><rect x="40" y="80" width="35" height="2" fill="%23ff0080" opacity="0.4"/><rect x="100" y="120" width="40" height="3" fill="%2300ff88" opacity="0.6"/><circle cx="60" cy="140" r="3" fill="%23ff0080" opacity="0.7"/><circle cx="140" cy="60" r="2" fill="%2300ff88" opacity="0.8"/><polygon points="80,30 85,35 90,30 85,25" fill="%23ff0080" opacity="0.4"/><polygon points="120,150 125,155 130,150 125,145" fill="%2300ff88" opacity="0.5"/></svg>'),
+    linear-gradient(135deg, #0d1117 0%, #161925 30%, #0d1117 70%, #1a1d29 100%);
+}
+
+/* 叢林冒險 - 深綠自然色調 */
+.theme-jungle {
+  --bg-color: #1b4332;
+  --text-color: #d8f3dc;
+  --accent-color: #52b788;
+  --card-bg: #2d5a3d;
+  --border-color: #74c69d;
+  --decoration: 
+    radial-gradient(ellipse at 20% 30%, #52b78855 0%, transparent 70%),
+    radial-gradient(ellipse at 80% 70%, #40916c44 0%, transparent 60%),
+    radial-gradient(circle at 60% 20%, #2d5a3d 0 30px, transparent 60px),
+    radial-gradient(circle at 30% 80%, #1b4332 0 40px, transparent 70px),
+    url('data:image/svg+xml;utf8,<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="30" rx="25" ry="12" fill="%2352b788" opacity="0.3"/><ellipse cx="100" cy="60" rx="20" ry="8" fill="%2374c69d" opacity="0.4"/><ellipse cx="30" cy="100" rx="30" ry="15" fill="%2340916c" opacity="0.25"/><ellipse cx="120" cy="120" rx="18" ry="10" fill="%2352b788" opacity="0.35"/><path d="M60 40 Q70 30, 80 40 Q90 50, 100 40 Q110 30, 120 40" stroke="%2374c69d" stroke-width="3" fill="none" opacity="0.3"/><path d="M20 80 Q30 70, 40 80 Q50 90, 60 80" stroke="%2352b788" stroke-width="2" fill="none" opacity="0.4"/><circle cx="80" cy="100" r="4" fill="%2374c69d" opacity="0.5"/><circle cx="140" cy="40" r="3" fill="%2352b788" opacity="0.6"/></svg>'),
+    linear-gradient(60deg, #1b4332 0%, #2d5a3d 50%, #1b4332 100%);
   </style>
 </head>
 <body>
@@ -412,17 +487,18 @@
   <div class="container">
     <div class="decoration"></div>
     <h1>單字複習網站</h1>
-    <div class="upload-section">
-      <br>
-      <input type="file" id="csvFile" accept=".csv">
-      <div class="drag-area" id="dragArea">
-        拖曳CSV檔案至此處
-      </div>
-      <div>
-        <button class="btn" onclick="useSample()">或使用範例單字庫開始練習：</button>
-      </div>
-      <div id="uploadError" class="error"></div>
-    </div>
+<div class="upload-section">
+  <input type="file" id="csvFile" accept=".csv" style="display: none;">
+  <div class="drag-area" id="dragArea">
+    <div style="font-size: 1em; margin-bottom: 0.5em;">📁 選擇或拖曳CSV檔案</div>
+    <div style="font-size: 0.85em; opacity: 0.8; margin-bottom: 0.7em;">支援格式：序號,英文單字,中文意思</div>
+    <button class="btn" onclick="document.getElementById('csvFile').click()" 
+            style="background: var(--accent-color); margin-bottom: 0.5em;">選擇檔案</button>
+    <button class="btn" onclick="useSample()" 
+            style="background: #28a745; margin-top: 0.5em;">使用範例單字庫</button>
+  </div>
+  <div id="uploadError" class="error"></div>
+</div>
     <div class="range-section" id="rangeSection" style="display:none;">
       <label>練習範圍：</label>
       <input type="number" id="rangeStart" min="1" value="1"> ~
