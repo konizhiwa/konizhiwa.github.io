@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -319,7 +320,7 @@
     .pronounce-btn:hover svg, .pronounce-btn:active svg {
       fill: #ff4081;
     }
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       :root { --container-width: 99vw; }
       .container {
         padding: 1em 0.4em 0.7em 0.4em;
@@ -491,7 +492,7 @@
   <input type="file" id="csvFile" accept=".csv" style="display: none;">
   <div class="drag-area" id="dragArea">
     <div style="font-size: 1em; margin-bottom: 0.5em;">📁 選擇或拖曳CSV檔案</div>
-    <div style="font-size: 0.85em; opacity: 0.8; margin-bottom: 0.7em;">支援格式：序號,英文單字,中文意思</div>
+
     <button class="btn" onclick="document.getElementById('csvFile').click()" 
             style="background: var(--accent-color); margin-bottom: 0.5em;">選擇檔案</button>
     <button class="btn" onclick="useSample()" 
@@ -528,10 +529,11 @@
     </div>
     <div class="review-section" style="display:none;">
       <h2>以下是您答錯的單字，可以針對這些單字進行複習：</h2>
+<button class="btn" id="exportWrongBtn">匯出錯誤單字CSV</button>
+        <button class="btn" id="retryWrongBtn">針對錯誤單字重新練習</button>
       <ul id="wrongList"></ul>
       <div style="margin-top:1.2em;">
-        <button class="btn" id="exportWrongBtn">匯出錯誤單字CSV</button>
-        <button class="btn" id="retryWrongBtn">針對錯誤單字重新練習</button>
+        
       </div>
     </div>
   </div>
@@ -775,7 +777,7 @@
       setTimeout(() => {
         current++;
         showWord();
-      }, 900);
+      }, 2000);
     }
 
     function updateStats() {
