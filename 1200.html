@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -855,6 +856,105 @@
     if ('speechSynthesis' in window) {
       window.speechSynthesis.onvoiceschanged = function() {};
     }
+
+// 在 script 標籤內添加以下音效功能
+
+// 音效系統
+function createAudioContext() {
+  return new (window.AudioContext || window.webkitAudioContext)();
+}
+
+let audioContext = null;
+
+function initAudio() {
+  if (!audioContext) {
+    try {
+      audioContext = createAudioContext();
+    } catch (e) {
+      console.log('Audio not supported');
+    }
+  }
+}
+
+// 播放正確答案音效（愉快的上升音調）
+function playCorrectSound() {
+  initAudio();
+  if (!audioContext) return;
+  
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  // 設定音調：C5 -> E5 -> G5 (大三和弦上行)
+  oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+  oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+  oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+  
+  // 音量淡入淡出
+  gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+  gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.05);
+  gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.25);
+  gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.4);
+  
+  oscillator.type = 'sine';
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + 0.4);
+}
+
+// 播放錯誤答案音效（錯誤提示音）
+function playIncorrectSound() {
+  initAudio();
+  if (!audioContext) return;
+  
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  // 設定音調：重複的低音嗶嗶聲
+  oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+  oscillator.frequency.setValueAtTime(200, audioContext.currentTime + 0.12);
+  oscillator.frequency.setValueAtTime(200, audioContext.currentTime + 0.24);
+  
+  // 音量控制 - 三次短促的嗶聲
+  gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+  gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.02);
+  gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.08);
+  gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.14);
+  gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.2);
+  gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.26);
+  gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.32);
+  
+  oscillator.type = 'square';
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + 0.35);
+}
+
+// 修改 checkAnswer 函數，在原有的函數中添加音效
+function checkAnswer() {
+  const ans = answerInput.value.trim().toLowerCase();
+  const correct = wordList[current].en.toLowerCase();
+  if (ans === correct) {
+    resultMsg.textContent = "答對了！";
+    resultMsg.className = "result correct";
+    correctCount++;
+    playCorrectSound(); // 添加正確音效
+  } else {
+    resultMsg.textContent = `答錯了，正確答案是：${wordList[current].en}`;
+    resultMsg.className = "result incorrect";
+    wrongWords.push(wordList[current]);
+    wrongCount++;
+    playIncorrectSound(); // 添加錯誤音效
+  }
+  updateStats();
+  setTimeout(() => {
+    current++;
+    showWord();
+  }, 2000);
+}
   </script>
 </body>
 </html>
