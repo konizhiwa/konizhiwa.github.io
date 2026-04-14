@@ -6,228 +6,296 @@
     <title>龍華國小606下學期期中考前複習</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
+        :root {
+            --primary-color: #4facfe;
+            --secondary-color: #00f2fe;
+            --bg-color: #f0f2f5;
+            --text-dark: #2d3436;
+            --accent-green: #00b894;
+            --accent-red: #ff7675;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Microsoft JhengHei', sans-serif;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
         }
 
         body {
-            background: #f5f5f5;
-            padding: 20px;
+            background: linear-gradient(-45deg, #f0f2f5, #e6e9f0, #fdfbfb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 40px 20px;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 20px;
+            font-size: 2.2rem;
+            background: linear-gradient(120deg, #2d3436 0%, #636e72 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            font-weight: 800;
         }
 
+        /* 搜尋框優化 */
         .search-container {
-            background: white;
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .search-input {
-            padding: 10px 15px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: 2px solid transparent;
+            background: #fff;
+            border-radius: 12px;
             font-size: 16px;
-            width: 300px;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .search-input:focus {
             outline: none;
-            border-color: #2196F3;
-        }
-
-        .search-label {
-            color: #666;
-            font-weight: bold;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
         }
 
         .clear-search {
-            background: #f44336;
+            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .clear-search:hover {
-            background: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.3);
         }
 
+        /* 科目區塊優化 */
         .subject-section {
             background: white;
-            border-radius: 10px;
-            padding: 20px;
+            border-radius: 24px;
+            padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .subject-section:hover {
+            transform: translateY(-5px);
         }
 
         .subject-title {
-            font-size: 24px;
-            color: #333;
-            padding: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding-bottom: 15px;
             margin-bottom: 20px;
-            border-bottom: 3px solid #4CAF50;
+            border-bottom: 2px solid #f1f2f6;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: #2d3436;
         }
 
         .toggle-btn {
-            background: #2196F3;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
         }
 
         .toggle-btn:hover {
-            background: #0D47A1;
+            opacity: 0.9;
+            letter-spacing: 1px;
         }
 
+        /* 表格優化 */
         .resource-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0 8px;
             margin-top: 10px;
         }
 
-        .resource-table th,
-        .resource-table td {
-            padding: 12px;
+        .resource-table th {
+            padding: 12px 20px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            color: #636e72;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
         }
 
-        .resource-table th {
-            background-color: #f8f9fa;
-            font-weight: bold;
-            color: #333;
+        .resource-table tbody tr {
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+
+        .resource-table td {
+            padding: 16px 20px;
+            border: none;
+        }
+
+        .resource-table td:first-child {
+            border-radius: 12px 0 0 12px;
+            font-weight: 500;
+        }
+
+        .resource-table td:last-child {
+            border-radius: 0 12px 12px 0;
+            text-align: right;
         }
 
         .resource-table tr:hover {
-            background-color: #f5f5f5;
+            background-color: #edf2f7;
+            transform: scale(1.01);
         }
 
         .resource-link {
-            color: #2196F3;
+            display: inline-block;
+            background: white;
+            color: var(--primary-color);
             text-decoration: none;
-            transition: color 0.3s;
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: 1.5px solid var(--primary-color);
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
         }
 
         .resource-link:hover {
-            color: #0D47A1;
-            text-decoration: underline;
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
         }
 
         .highlight {
-            background-color: yellow;
-            font-weight: bold;
+            background: #ffeaa7;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #d63031;
         }
 
         .no-results {
-            display: none;
-            padding: 20px;
+            background: #fab1a022;
+            padding: 30px;
+            border-radius: 15px;
+            color: #e17055;
             text-align: center;
-            color: #666;
-            font-style: italic;
+            font-weight: 600;
+            display: none;
         }
 
         @media (max-width: 768px) {
-            .search-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .search-input {
-                width: 100%;
-            }
-
-            .subject-title {
-                font-size: 20px;
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .resource-table th,
-            .resource-table td {
-                padding: 8px;
-                font-size: 14px;
-            }
+            body { padding: 20px 15px; }
+            .search-container { flex-direction: column; padding: 15px; }
+            .search-input { width: 100%; }
+            .subject-title { font-size: 1.2rem; }
+            .resource-table th { display: none; }
+            .resource-table td { display: block; width: 100%; text-align: left !important; }
+            .resource-table td:first-child { padding-bottom: 5px; }
+            .resource-table td:last-child { padding-top: 5px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>龍華國小606下學期期中考前複習</h1>
+        <h1>龍華國小 606 期中複習資源</h1>
 
         <div class="search-container">
-            <span class="search-label">🔍 搜尋資源：</span>
-            <input type="text" class="search-input" id="searchInput" placeholder="輸入關鍵字搜尋...">
-            <button class="clear-search" onclick="clearSearch()">清除</button>
+            <span class="search-label">🔍 快速搜尋</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="輸入課程關鍵字...">
+            <button class="clear-search" onclick="clearSearch()">清除重置</button>
         </div>
 
         <div class="subject-section">
             <div class="subject-title">
-                <span>國語 (L1-L6)</span>
-                <button class="toggle-btn" onclick="toggleSection(this)">顯示/隱藏</button>
+                <span>📚 國語 (L1-L6)</span>
+                <button class="toggle-btn" onclick="toggleSection(this)">收合目錄</button>
             </div>
-            <table class="resource-table">
-                <thead>
-                    <tr>
-                        <th>標題</th>
-                        <th>連結</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>南一六下國語成語(L1~L6)</td><td><a href="https://drive.google.com/file/d/1YULXujwNpcmEztYDl5KJGLowcNiRh6D1/view?usp=classroom_web&authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國語成語解釋(L1~L6)</td><td><a href="https://wordwall.net/resource/108267944?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國語成語例句(L1~L6)</td><td><a href="https://wordwall.net/resource/108267998?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國語多音字(L1~L6)</td><td><a href="https://drive.google.com/file/d/1FnAo1sFBm4MsMB_KSwDt3kUVeoJn5GaK/view?usp=classroom_web&authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國語多音字(L1~L6)測驗</td><td><a href="https://gemini.google.com/share/615b5669c572?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國語L1~L6_V1</td><td><a href="https://oneexam.oneclass.com.tw/quiz/89915413?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國語L1~L6_V2</td><td><a href="https://oneexam.oneclass.com.tw/quiz/32767944?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國語L1~L6_V3</td><td><a href="https://oneexam.oneclass.com.tw/quiz/47741134?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國語L1~L6_V4</td><td><a href="https://oneexam.oneclass.com.tw/quiz/41741643?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國L1~L6文意_V1</td><td><a href="https://oneexam.oneclass.com.tw/quiz/30254712?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國L1~L6文意_V2</td><td><a href="https://oneexam.oneclass.com.tw/quiz/51906088?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                    <tr><td>南一六下國語語文天地一、二</td><td><a href="https://wordwall.net/resource/110512282?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
-                </tbody>
-            </table>
-            <div class="no-results">沒有找到符合的資源</div>
+            <div class="table-responsive">
+                <table class="resource-table">
+                    <thead>
+                        <tr>
+                            <th>複習主題內容</th>
+                            <th style="text-align: right;">資源連結</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>南一六下國語成語(L1~L6)</td><td><a href="https://drive.google.com/file/d/1YULXujwNpcmEztYDl5KJGLowcNiRh6D1/view?usp=classroom_web&authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語成語解釋(L1~L6)</td><td><a href="https://wordwall.net/resource/108267944?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語成語例句(L1~L6)</td><td><a href="https://wordwall.net/resource/108267998?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語多音字(L1~L6)</td><td><a href="https://drive.google.com/file/d/1FnAo1sFBm4MsMB_KSwDt3kUVeoJn5GaK/view?usp=classroom_web&authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語多音字(L1~L6)測驗</td><td><a href="https://gemini.google.com/share/615b5669c572?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語L1~L6_V1</td><td><a href="https://oneexam.oneclass.com.tw/quiz/89915413?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語L1~L6_V2</td><td><a href="https://oneexam.oneclass.com.tw/quiz/32767944?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語L1~L6_V3</td><td><a href="https://oneexam.oneclass.com.tw/quiz/47741134?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語L1~L6_V4</td><td><a href="https://oneexam.oneclass.com.tw/quiz/41741643?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語L1~L6_V5</td><td><a href="https://oneexam.oneclass.com.tw/quiz/38258767" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語L1~L6_V6</td><td><a href="https://oneexam.oneclass.com.tw/quiz/97399516" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國L1~L6文意_V1</td><td><a href="https://oneexam.oneclass.com.tw/quiz/30254712?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國L1~L6文意_V2</td><td><a href="https://oneexam.oneclass.com.tw/quiz/51906088?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>南一六下國語語文天地一、二</td><td><a href="https://wordwall.net/resource/110512282?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="no-results">查無此關鍵字，請更換關鍵字再試一次。</div>
         </div>
 
         <div class="subject-section">
             <div class="subject-title">
-                <span>社會 (U1-U2)</span>
-                <button class="toggle-btn" onclick="toggleSection(this)">顯示/隱藏</button>
+                <span>🌍 社會 (U1-U2)</span>
+                <button class="toggle-btn" onclick="toggleSection(this)">收合目錄</button>
             </div>
             <table class="resource-table">
                 <thead>
                     <tr>
-                        <th>標題</th>
-                        <th>連結</th>
+                        <th>複習主題內容</th>
+                        <th style="text-align: right;">資源連結</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -252,42 +320,48 @@
                     <tr><td>EDCAFE_社V1</td><td><a href="https://app.edcafe.ai/quizzes/69c4c88ad4f0949bf202fc8f?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
                     <tr><td>EDCAFE_社V2</td><td><a href="https://app.edcafe.ai/quizzes/69c9b8fe972c058f86386f5a?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
                     <tr><td>EDCAFE_社V3</td><td><a href="https://app.edcafe.ai/quizzes/69d88411b2eaea87f99c4b0a?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
+                    <tr><td>EDCAFE_社V4</td><td><a href="https://app.edcafe.ai/quizzes/69ddcedee2c8076440a6c843" class="resource-link" target="_blank">前往連結</a></td></tr>
+                    <tr><td>EDCAFE_社V5</td><td><a href="https://app.edcafe.ai/quizzes/69dde1587af99efb06c61d32" class="resource-link" target="_blank">前往連結</a></td></tr>
+                    <tr><td>社會考前100題_V1</td><td><a href="https://gemini.google.com/u/1/share/341767409a3a" class="resource-link" target="_blank">前往連結</a></td></tr>
+                    <tr><td>社會考前100題_V2</td><td><a href="https://gemini.google.com/share/310c1d624e68" class="resource-link" target="_blank">前往連結</a></td></tr>
                 </tbody>
             </table>
-            <div class="no-results">沒有找到符合的資源</div>
+            <div class="no-results">查無此關鍵字，請嘗試其他社會科詞彙。</div>
         </div>
 
         <div class="subject-section">
             <div class="subject-title">
-                <span>數學</span>
-                <button class="toggle-btn" onclick="toggleSection(this)">顯示/隱藏</button>
+                <span>📐 數學 (U1~U4-1)</span>
+                <button class="toggle-btn" onclick="toggleSection(this)">收合目錄</button>
             </div>
             <table class="resource-table">
                 <thead>
                     <tr>
-                        <th>標題</th>
-                        <th>連結</th>
+                        <th>複習主題內容</th>
+                        <th style="text-align: right;">資源連結</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr><td>龍華國小606數學線上練習網站</td><td><a href="https://sites.google.com/mail.lhps.kh.edu.tw/konizhiwa?authuser=1" class="resource-link" target="_blank">前往連結</a></td></tr>
                 </tbody>
             </table>
-            <div class="no-results">沒有找到符合的資源</div>
+            <div class="no-results">沒有找到相關數學資源</div>
         </div>
     </div>
 
     <script>
         function toggleSection(button) {
             const table = button.closest('.subject-section').querySelector('.resource-table');
-            if (table.style.display === 'none') {
-                table.style.display = 'table';
-                button.textContent = '顯示/隱藏';
-                button.style.backgroundColor = '#2196F3';
+            const isHidden = $(table).is(':hidden');
+            
+            $(table).slideToggle(300);
+            
+            if (!isHidden) {
+                button.textContent = '展開目錄';
+                button.style.background = 'linear-gradient(135deg, #636e72 0%, #2d3436 100%)';
             } else {
-                table.style.display = 'none';
-                button.textContent = '顯示';
-                button.style.backgroundColor = '#f44336';
+                button.textContent = '收合目錄';
+                button.style.background = 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)';
             }
         }
 
@@ -303,6 +377,7 @@
             sections.forEach(section => {
                 const rows = section.querySelectorAll('.resource-table tbody tr');
                 const noResults = section.querySelector('.no-results');
+                const table = section.querySelector('.resource-table');
                 let visibleCount = 0;
 
                 rows.forEach(row => {
@@ -326,18 +401,15 @@
 
                 if (visibleCount === 0 && searchText !== '') {
                     noResults.style.display = 'block';
+                    table.style.display = 'none';
                 } else {
                     noResults.style.display = 'none';
+                    table.style.display = 'table';
                 }
             });
         }
 
         document.getElementById('searchInput').addEventListener('input', filterResources);
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                filterResources();
-            }
-        });
     </script>
 </body>
 </html>
