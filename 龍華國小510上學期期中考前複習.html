@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>龍華國小510上學期期中考前複習</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4facfe;
+            --secondary-color: #00f2fe;
+            --bg-color: #f0f2f5;
+            --text-dark: #2d3436;
+            --accent-green: #00b894;
+            --accent-red: #ff7675;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #f0f2f5, #e6e9f0, #fdfbfb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 40px 20px;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            background: linear-gradient(120deg, #2d3436 0%, #636e72 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        /* 搜尋框優化 */
+        .search-container {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: 2px solid transparent;
+            background: #fff;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .clear-search {
+            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .clear-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(214, 48, 49, 0.3);
+        }
+
+        /* 科目區塊優化 */
+        .subject-section {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .subject-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .subject-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f1f2f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #2d3436;
+        }
+
+        .toggle-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+
+        /* 表格優化 */
+        .resource-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-top: 10px;
+        }
+
+        .resource-table th {
+            padding: 12px 20px;
+            text-align: left;
+            color: #636e72;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .resource-table tbody tr {
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+
+        .resource-table td {
+            padding: 16px 20px;
+            border: none;
+        }
+
+        .resource-table td:first-child {
+            border-radius: 12px 0 0 12px;
+            font-weight: 500;
+        }
+
+        .resource-table td:last-child {
+            border-radius: 0 12px 12px 0;
+            text-align: right;
+        }
+
+        .resource-table tr:hover {
+            background-color: #edf2f7;
+            transform: scale(1.01);
+        }
+
+        .resource-link {
+            display: inline-block;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: 1.5px solid var(--primary-color);
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .resource-link:hover {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+        }
+
+        .highlight {
+            background: #ffeaa7;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #d63031;
+        }
+
+        .no-results {
+            background: #fab1a022;
+            padding: 30px;
+            border-radius: 15px;
+            color: #e17055;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 20px 15px; }
+            .search-container { flex-direction: column; padding: 15px; }
+            .search-input { width: 100%; }
+            .subject-title { font-size: 1.2rem; }
+            .resource-table th { display: none; }
+            .resource-table td { display: block; width: 100%; text-align: left !important; }
+            .resource-table td:first-child { padding-bottom: 5px; }
+            .resource-table td:last-child { padding-top: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>龍華國小510上學期期中考前複習</h1>
+
+        <div class="search-container">
+            <span class="search-label">🔍 快速搜尋</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="輸入課程關鍵字...">
+            <button class="clear-search" onclick="clearSearch()">清除重置</button>
+        </div>
+
+        <div class="subject-section">
+            <div class="subject-title">
+                <span>📚 國語</span>
+                <button class="toggle-btn" onclick="toggleSection(this)">收合目錄</button>
+            </div>
+            <table class="resource-table">
+                <thead>
+                    <tr>
+                        <th>複習主題內容</th>
+                        <th style="text-align: right;">資源連結</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr><td>五上南一國語成語L1~L6(例句)wordwall</td><td><a href="https://wordwall.net/resource/118676430?wwmethod=link" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語成語L1~L6(解釋)wordwall</td><td><a href="https://wordwall.net/resource/118676100?wwmethod=link" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語成語L1~L6(解釋+例句)列印版</td><td><a href="https://drive.google.com/file/d/10nwwCNk8GL4oa8Q44H9fwmUEfnGHKMSY/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語成語L1~L6(解釋)圖解</td><td><a href="https://drive.google.com/file/d/1kun80_8aRH_SQgtdpOrADvyxv9H4ZujR/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語語文天地一、二wordwall</td><td><a href="https://wordwall.net/resource/121220488?wwmethod=link" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語期中考多音字線上練習</td><td><a href="https://share.gemini.google/vAgcwBeXd0nl" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語期中考多音字(列印版)</td><td><a href="https://drive.google.com/file/d/1ejiLaIoOH58nffazy1rCBUaPQLyBTry2/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語期中考多音字測驗(解答版)</td><td><a href="https://drive.google.com/file/d/1BmjgK4TTSSduGSKJ8NfY_mHQqnL9tPHy/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語線上測驗L1~L6_V1</td><td><a href="https://exam.nani.com.tw/quiz/41811267" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語線上測驗L1~L6_V2</td><td><a href="https://exam.nani.com.tw/quiz/82631161" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語線上測驗L1~L6_V3</td><td><a href="https://exam.nani.com.tw/quiz/78055372" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語線上測驗L1~L6_V4</td><td><a href="https://exam.nani.com.tw/quiz/63598070" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語線上測驗L1~L6_V5</td><td><a href="https://exam.nani.com.tw/quiz/94840617" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語線上測驗L1~L6_V6</td><td><a href="https://exam.nani.com.tw/quiz/94797283" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語線上測驗L1~L6_V7</td><td><a href="https://exam.nani.com.tw/quiz/73892413" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語線上測驗L1~L6_文意_V1</td><td><a href="https://exam.nani.com.tw/quiz/61066405" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上南一國語線上測驗L1~L6_文意_V2</td><td><a href="https://exam.nani.com.tw/quiz/68374784" class="resource-link" target="_blank">前往連結</a></td></tr>
+                </tbody>
+            </table>
+            <div class="no-results">查無此關鍵字，請更換關鍵字再試一次。</div>
+        </div>
+
+        <div class="subject-section">
+            <div class="subject-title">
+                <span>🌍 社會</span>
+                <button class="toggle-btn" onclick="toggleSection(this)">收合目錄</button>
+            </div>
+            <table class="resource-table">
+                <thead>
+                    <tr>
+                        <th>複習主題內容</th>
+                        <th style="text-align: right;">資源連結</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr><td>五上翰林社會U1、U2重點整理列印版</td><td><a href="https://drive.google.com/file/d/1DbhZGAaVny5PqpAFIrFB--yl8Al_3HEc/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會U1 (PODCAST)</td><td><a href="https://drive.google.com/file/d/1NfWxb1FbCX5xnCOj6l_1UvkngNMGKXDL/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會U1 (影片摘要)</td><td><a href="https://drive.google.com/file/d/1Qw9BS14UxtmrrAv7fYwBGYxCiYH-lrT8/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會U1(時間軸)</td><td><a href="https://drive.google.com/file/d/1ngRmN0VH-cpZUOeruQVprIddRCpfV3E7/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會U1(簡報)</td><td><a href="https://drive.google.com/file/d/1cvhtDvzUTpduXM22KKjb_h7xQw94HnNA/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會U2 (PODCAST)</td><td><a href="https://drive.google.com/file/d/1BBHqLVIWO9-vBxizqckD3R4wvH-yv50K/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會U2 (影片摘要)</td><td><a href="https://drive.google.com/file/d/1CrQjpFF8buvGCB_jf8ELzA-8yKHv-fqI/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會U2(時間軸)</td><td><a href="https://drive.google.com/file/d/1YPqkMJ-pHyqdquSPVJJNOoNw9boiDkir/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會U2(簡報)</td><td><a href="https://drive.google.com/file/d/1Hpqp8kFFKVfB5XpxvszXimSRn8kYL_qR/view?usp=sharing" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V1</td><td><a href="https://qt.hle.com.tw/87253852" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V2</td><td><a href="https://qt.hle.com.tw/51727490" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V3</td><td><a href="https://qt.hle.com.tw/17442544" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V4</td><td><a href="https://qt.hle.com.tw/79773598" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V5</td><td><a href="https://qt.hle.com.tw/97104338" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V6</td><td><a href="https://qt.hle.com.tw/55147573" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V7</td><td><a href="https://qt.hle.com.tw/55106233" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V8</td><td><a href="https://qt.hle.com.tw/12534697" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V9</td><td><a href="https://qt.hle.com.tw/18132670" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會線上測驗U1~U2_V10</td><td><a href="https://qt.hle.com.tw/01691548" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會BLOOKET遊戲U1_V1</td><td><a href="https://play.blooket.com/play?hwId=6acd7048ed3ab0d81c7feab7" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會BLOOKET遊戲U1_V2</td><td><a href="https://play.blooket.com/play?hwId=6ad6f07cdab865ff892ce2b2" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會BLOOKET遊戲U2_V1</td><td><a href="https://play.blooket.com/play?hwId=6acd7016cabc428223a74485" class="resource-link" target="_blank">前往連結</a></td></tr>
+                        <tr><td>五上翰林社會BLOOKET遊戲U2_V2</td><td><a href="https://play.blooket.com/play?hwId=6ad6f12ac81b893c0e09268f" class="resource-link" target="_blank">前往連結</a></td></tr>
+                </tbody>
+            </table>
+            <div class="no-results">查無此關鍵字，請嘗試其他社會科詞彙。</div>
+        </div>
+
+        <div class="subject-section">
+            <div class="subject-title">
+                <span>📐 數學</span>
+                <button class="toggle-btn" onclick="toggleSection(this)">收合目錄</button>
+            </div>
+            <table class="resource-table">
+                <thead>
+                    <tr>
+                        <th>複習主題內容</th>
+                        <th style="text-align: right;">資源連結</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr><td>龍華國小510數學線上練習網站</td><td><a href="https://sites.google.com/mail.lhps.kh.edu.tw/konizhiwa/%E9%A6%96%E9%A0%81?authuser=0" class="resource-link" target="_blank">前往連結</a></td></tr>
+                </tbody>
+            </table>
+            <div class="no-results">沒有找到相關數學資源</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(button) {
+            const table = button.closest('.subject-section').querySelector('.resource-table');
+            const isHidden = $(table).is(':hidden');
+            
+            $(table).slideToggle(300);
+            
+            if (!isHidden) {
+                button.textContent = '展開目錄';
+                button.style.background = 'linear-gradient(135deg, #636e72 0%, #2d3436 100%)';
+            } else {
+                button.textContent = '收合目錄';
+                button.style.background = 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)';
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            filterResources();
+        }
+
+        function filterResources() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const sections = document.querySelectorAll('.subject-section');
+
+            sections.forEach(section => {
+                const rows = section.querySelectorAll('.resource-table tbody tr');
+                const noResults = section.querySelector('.no-results');
+                const table = section.querySelector('.resource-table');
+                let visibleCount = 0;
+
+                rows.forEach(row => {
+                    const titleCell = row.cells[0];
+                    const originalText = titleCell.textContent;
+                    
+                    titleCell.innerHTML = originalText;
+
+                    if (searchText === '' || originalText.toLowerCase().includes(searchText)) {
+                        row.style.display = '';
+                        visibleCount++;
+
+                        if (searchText !== '') {
+                            const regex = new RegExp(`(${searchText})`, 'gi');
+                            titleCell.innerHTML = originalText.replace(regex, '<span class="highlight">$1</span>');
+                        }
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                if (visibleCount === 0 && searchText !== '') {
+                    noResults.style.display = 'block';
+                    table.style.display = 'none';
+                } else {
+                    noResults.style.display = 'none';
+                    table.style.display = 'table';
+                }
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('input', filterResources);
+    </script>
+</body>
+</html>
